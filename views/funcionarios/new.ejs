@@ -1,0 +1,25 @@
+<%- include('../partials/header') %>
+
+<h1>Novo Funcionário</h1>
+<form action="/funcionarios/new" method="POST">
+  <div class="mb-3">
+    <label>RE:</label>
+    <input type="text" name="re" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label>nome:</label>
+    <input type="text" name="nome" class="form-control" required>
+  </div>
+    <div class="mb-3">
+    <label>data de admissão:</label>
+    <input type="text" name="dataAdmissao" class="form-control" required>
+  </div>
+    <div class="mb-3">
+    <label>salário:</label>
+    <input type="text" name="salario" class="form-control" required>
+  </div>
+  <button type="submit" class="btn btn-success">Salvar</button>
+  <a href="/funcionarios" class="btn btn-secondary">Cancelar</a>
+</form>
+
+<%- include('../partials/footer') %>

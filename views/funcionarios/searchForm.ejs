@@ -1,0 +1,13 @@
+<%- include('../partials/header') %>
+
+<h1>Buscar Funcionário</h1>
+<form action="/funcionarios/edit" method="POST">
+  <div class="mb-3">
+    <label>RE:</label>
+    <input type="text" name="re" class="form-control" required/>
+  </div>
+  <button type="submit" class="btn btn-success">Buscar</button>
+  <a href="/funcionarios" class="btn btn-secondary">Cancelar</a>
+</form>
+
+<%- include('../partials/footer') %>

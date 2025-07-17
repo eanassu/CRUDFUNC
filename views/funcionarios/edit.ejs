@@ -1,0 +1,24 @@
+<%- include('../partials/header') %>
+
+<h1>Editar Funcionário</h1>
+<form action="/funcionarios/<%= funcionario.RE %>" method="POST">
+  <div class="mb-3">
+    <label>Alterando funcionário <%= funcionario.RE %>:</label>
+  </div>  
+  <div class="mb-3">
+    <label>Nome:</label>
+    <input type="text" name="nome" value="<%= funcionario.NOME %>" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label>data de admissão:</label>
+    <input type="text" name="dataAdmissao" value="<%= funcionario.DATAADMISSAO %>" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label>salário:</label>
+    <input type="text" name="salario" value="<%= funcionario.SALARIO %>" class="form-control" required>
+  </div>
+  <button type="submit" class="btn btn-primary">Atualizar</button>
+  <a href="/funcionarios" class="btn btn-secondary">Cancelar</a>
+</form>
+
+<%- include('../partials/footer') %>
