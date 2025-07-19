@@ -30,10 +30,10 @@
   <tbody>
     <% funcionarios.forEach(funcionario => { %>
       <tr>
-        <td><%= funcionario.RE %></td>
-        <td><%= funcionario.NOME %></td>
-        <td><%= formatDate(funcionario.DATAADMISSAO) %></td>
-        <td><%= formatCurrency(funcionario.SALARIO) %></td>
+        <td><%= funcionario.re %></td>
+        <td><%= funcionario.nome %></td>
+        <td><%= formatDate(funcionario.dataAdmissao) %></td>
+        <td><%= formatCurrency(funcionario.salario) %></td>
       </tr>
     <% }) %>
   </tbody>

@@ -7,6 +7,7 @@ exports.inicio = (req, res) => {
 // Listar todos os usuários
 exports.listFuncionarios = (req, res) => {
   Funcionario.getAll((err, results) => {
+  console.log(results);
   if (err) return res.status(500).send('Erro ao buscar Funcionários');
     res.render('funcionarios/list', { funcionarios: results });
   });
@@ -49,7 +50,7 @@ exports.showEditForm = (req, res) => {
   const { re } = req.body;
   Funcionario.getByRe(re, (err, results) => {
     if (err || results.length === 0) return res.status(404).send('Funcionário não encontrado');
-    results[0].DATAADMISSAO = formatDateToBR(results[0].DATAADMISSAO);
+    results[0].dataAdmissao = formatDateToBR(results[0].dataAdmissao);
     res.render('funcionarios/edit', { funcionario: results[0] });
   });
 };
