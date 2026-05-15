@@ -34,6 +34,7 @@ exports.createFuncionario = (req, res) => {
   });
 };
 
+// formata a data para o formato brasileiro 'dd/MM/yyyy'
 function formatDateToBR(dateStr) {
   if (!dateStr) return '';
   const date = new Date(dateStr);
@@ -74,10 +75,12 @@ exports.deleteFuncionario = (req, res) => {
   });
 };
 
+// exibe a tela de exclusão
 exports.showDeleteForm = (req, res) => {
   res.render('funcionarios/deleteForm');
 };
 
+// exibe a tela de busca
 exports.showSearchForm = (req, res) => {  
   res.render('funcionarios/searchForm');
 };

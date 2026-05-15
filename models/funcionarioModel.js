@@ -1,5 +1,6 @@
 const db = require('../config/db');
 
+// DAO do Funcionario
 const Funcionario = {
   getAll: cb => db.query('SELECT * FROM FUNCIONARIOS', cb),
   getByRe: (re, cb) => db.query('SELECT * FROM FUNCIONARIOS WHERE re = ?', [re], cb),

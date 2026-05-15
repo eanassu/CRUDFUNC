@@ -1,5 +1,6 @@
 const db = require('../config/db');
 
+// DAO do Login
 const Login = {
     getAll: cb => db.query('SELECT * FROM LOGINS', cb),
     getByEmail: (email, cb) => db.query('SELECT * FROM LOGINS WHERE EMAIL = ?', [email], cb),

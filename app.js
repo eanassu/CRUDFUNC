@@ -5,6 +5,7 @@ const funcionarioRoutes = require('./routes/funcionarioRoutes');
 const authRoutes = require('./routes/authRoutes');
 const app = express();
 
+// cria a sessão para login
 app.use(session({
   secret: 'chave-secreta-teste',
   resave: false,
@@ -18,7 +19,6 @@ app.use(authRoutes);
 
 app.set('view engine', 'ejs');
 app.set('views', './views');
-
 
 app.get('/', (req, res) => {
   res.redirect('/funcionarios'); // ou res.render('algumaView') se quiser uma página inicial
