@@ -1,3 +1,4 @@
+<%- include('partials/header') %>
 <h1>Login</h1>
 <form method="POST" action="/login">
   <input type="text" name="email" placeholder="Usuário" required><br/>
@@ -7,3 +8,4 @@
     <div style="color:red"><%= error %></div>
   <% } %>
 </form>
+<%- include('partials/footer') %>
