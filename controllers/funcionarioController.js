@@ -7,7 +7,6 @@ exports.inicio = (req, res) => {
 // Listar todos os usuários
 exports.listFuncionarios = (req, res) => {
   Funcionario.getAll((err, results) => {
-  console.log(results);
   if (err) return res.status(500).send('Erro ao buscar Funcionários');
     res.render('funcionarios/list', { funcionarios: results });
   });
