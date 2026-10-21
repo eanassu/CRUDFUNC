@@ -5,11 +5,14 @@ exports.inicio = (req, res) => {
 };
 
 // Listar todos os usuários
-exports.listFuncionarios = (req, res) => {
-  Funcionario.getAll((err, results) => {
-  if (err) return res.status(500).send('Erro ao buscar Funcionários');
-    res.render('funcionarios/list', { funcionarios: results });
-  });
+exports.listFuncionarios = async (req, res) => {
+  try {
+    const funcionarios = await Funcionario.getAll();
+    res.render('funcionarios/list', { funcionarios });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Erro ao buscar Funcionários');
+  }
 };
 
 // Exibir formulário de novo usuário
@@ -25,13 +28,16 @@ function formatDateToMySQL(dateStr) {
 }
 
 // Criar novo usuário
-exports.createFuncionario = (req, res) => {
-  req.body.dataAdmissao = formatDateToMySQL(req.body.dataAdmissao);
-  const { re, nome, dataAdmissao, salario } = req.body;
-  Funcionario.create({ re, nome, dataAdmissao, salario }, err => {
-    if (err) return res.status(500).send('Erro ao criar Funcionário');
+exports.createFuncionario = async (req, res) => {
+  try {
+    const dataAdmissao = formatDateToMySQL(req.body.dataAdmissao);
+    const { re, nome, salario } = req.body;
+    await Funcionario.create({ re, nome, dataAdmissao, salario });
     res.redirect('/funcionarios');
-  });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Erro ao criar Funcionário');
+  }
 };
 
 // formata a data para o formato brasileiro 'dd/MM/yyyy'
@@ -42,37 +48,49 @@ function formatDateToBR(dateStr) {
   const day = String(date.getDate()).padStart(2, '0');
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const year = date.getFullYear();
-  return day+'/'+month+'/'+year;
+  return day + '/' + month + '/' + year;
 }
 
-// Exibir formulário de edição
-exports.showEditForm = (req, res) => {
-  const { re } = req.body;
-  Funcionario.getByRe(re, (err, results) => {
-    if (err || results.length === 0) return res.status(404).send('Funcionário não encontrado');
-    results[0].dataAdmissao = formatDateToBR(results[0].dataAdmissao);
-    res.render('funcionarios/edit', { funcionario: results[0] });
-  });
+// Exibir formulário de edição (suporta parâmetro de rota /:re/edit ou query ?re=...)
+exports.showEditForm = async (req, res) => {
+  try {
+    const re = req.params.re || req.query.re || req.body.re;
+    const funcionario = await Funcionario.getByRe(re);
+    if (!funcionario) {
+      return res.status(404).send('Funcionário não encontrado');
+    }
+    funcionario.dataAdmissao = formatDateToBR(funcionario.dataAdmissao);
+    res.render('funcionarios/edit', { funcionario });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Erro ao buscar Funcionário');
+  }
 };
 
 // Atualizar usuário
-exports.updateFuncionario = (req, res) => {
-  req.body.dataAdmissao = formatDateToMySQL(req.body.dataAdmissao);
-  const { re } = req.params;
-  const { nome, dataAdmissao, salario } = req.body;
-  Funcionario.update(re, { nome, dataAdmissao, salario }, err => {
-    if (err) return res.status(500).send('Erro ao atualizar funcionário');
+exports.updateFuncionario = async (req, res) => {
+  try {
+    const dataAdmissao = formatDateToMySQL(req.body.dataAdmissao);
+    const { re } = req.params;
+    const { nome, salario } = req.body;
+    await Funcionario.update(re, { nome, dataAdmissao, salario });
     res.redirect('/funcionarios');
-  });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Erro ao atualizar funcionário');
+  }
 };
 
-// Deletar usuário
-exports.deleteFuncionario = (req, res) => {
-  const { re } = req.body;
-  Funcionario.delete(re, err => {
-  if (err) return res.status(500).send('Erro ao excluir funcionário');
+// Deletar usuário (suporta parâmetro de rota /:re ou body.re)
+exports.deleteFuncionario = async (req, res) => {
+  try {
+    const re = req.params.re || req.body.re;
+    await Funcionario.delete(re);
     res.redirect('/funcionarios');
-  });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Erro ao excluir funcionário');
+  }
 };
 
 // exibe a tela de exclusão
@@ -81,6 +99,6 @@ exports.showDeleteForm = (req, res) => {
 };
 
 // exibe a tela de busca
-exports.showSearchForm = (req, res) => {  
+exports.showSearchForm = (req, res) => {
   res.render('funcionarios/searchForm');
 };

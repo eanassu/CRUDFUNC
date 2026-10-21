@@ -1,12 +1,12 @@
 <%- include('../partials/header') %>
 
 <h1>Excluir Funcionário</h1>
-<form action="/funcionarios/delete" method="POST">
+<form action="/funcionarios/delete?_method=DELETE" method="POST">
   <div class="mb-3">
     <label>RE:</label>
     <input type="text" name="re" class="form-control" required/>
   </div>
-  <button type="submit" class="btn btn-success">Excluir</button>
+  <button type="submit" class="btn btn-danger">Excluir</button>
   <a href="/funcionarios" class="btn btn-secondary">Cancelar</a>
 </form>
 

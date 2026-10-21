@@ -1,45 +1,32 @@
 const express = require('express');
 const router = express.Router();
 const funcionarioController = require('../controllers/funcionarioController');
-const authController = require('../controllers/authController');
+const { requireLogin } = require('../middlewares/authMiddleware');
 
-function requireLogin(req, res, next) {
-  if ( !req.session || (req.session && !req.session.login)) return res.redirect('/login');
-  next();
-}
+// Aplica autenticação em todas as rotas de funcionários de uma só vez
+router.use(requireLogin);
 
-// tela inicial
-router.get('/', requireLogin, funcionarioController.inicio);
+// Tela inicial
+router.get('/', funcionarioController.inicio);
 
-// Listar todos os usuários
-router.get('/list', requireLogin, funcionarioController.listFuncionarios);
+// Listar todos os funcionários
+router.get('/list', funcionarioController.listFuncionarios);
 
-// Deletar usuário
-router.post('/delete', requireLogin, funcionarioController.deleteFuncionario);
+// Exibir formulário para novo funcionário e criar funcionário
+router.get('/new', funcionarioController.showCreateForm);
+router.post('/new', funcionarioController.createFuncionario);
 
-// Exibir formulário para novo usuário
-router.get('/new', requireLogin, funcionarioController.showCreateForm);
+// Exibir tela de busca e formulário de edição (via GET)
+router.get('/search', funcionarioController.showSearchForm);
+router.get('/edit', funcionarioController.showEditForm);
+router.get('/:re/edit', funcionarioController.showEditForm);
 
-// Criar novo usuário
-router.post('/new', requireLogin, funcionarioController.createFuncionario); // ou use PUT com method-override
+// Exibir tela de exclusão e deletar funcionário (via DELETE com method-override)
+router.get('/showDelete', funcionarioController.showDeleteForm);
+router.delete('/delete', funcionarioController.deleteFuncionario);
+router.delete('/:re', funcionarioController.deleteFuncionario);
 
-// exibe tela de busca
-router.get('/search', requireLogin, funcionarioController.showSearchForm);
-
-// Exibir formulário de edição de um usuário
-router.post('/edit', requireLogin, funcionarioController.showEditForm);
-
-// Atualizar usuário
-router.post('/:re', requireLogin, funcionarioController.updateFuncionario); // ou use PUT com 7method-override
-
-// Exibir formulário para novo usuário
-router.get('/showDelete', requireLogin, funcionarioController.showDeleteForm);
-
-// exibe tela de login
-router.get('/login', authController.showLoginForm);
-// trata o login
-router.post('/login', authController.login);
-// executa logout
-router.get('/logout', authController.logout);
+// Atualizar funcionário (via PUT com method-override)
+router.put('/:re', funcionarioController.updateFuncionario);
 
 module.exports = router;

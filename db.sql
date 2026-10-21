@@ -1,13 +1,15 @@
-use crud;
+USE crud;
 
-create table Funcionarios(
-    re int, 
-    nome varchar(50),
-    dataAdmissao date,
-    salario decimal(15,2),
-    primary key(re));
-    
- create table logins(
-    email varchar(255),
-    senha varchar(2000),
-    primary key(email)); 
+CREATE TABLE IF NOT EXISTS funcionarios (
+    re INT,
+    nome VARCHAR(50),
+    dataAdmissao DATE,
+    salario DECIMAL(15,2),
+    PRIMARY KEY (re)
+);
+
+CREATE TABLE IF NOT EXISTS logins (
+    email VARCHAR(255),
+    senha VARCHAR(2000),
+    PRIMARY KEY (email)
+);

@@ -1,7 +1,7 @@
 <%- include('../partials/header') %>
 
 <h1>Editar Funcionário</h1>
-<form action="/funcionarios/<%= funcionario.re %>" method="POST">
+<form action="/funcionarios/<%= funcionario.re %>?_method=PUT" method="POST">
   <div class="mb-3">
     <label>Alterando funcionário <%= funcionario.re %>:</label>
   </div>  

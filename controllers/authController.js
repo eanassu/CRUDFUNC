@@ -5,23 +5,30 @@ exports.showLoginForm = (req, res) => {
   res.render('login');
 };
 
-exports.login = (req, res) => {
-  const { email, password } = req.body;
-  const user = Login.getByEmail(email, (err, results) => {
-    if (err || results.length === 0) return res.render('login', { error: 'Login não encontrado' });
-    bcrypt.compare(password, results[0].senha, (err, result) => {
-      if (result) {
-        console.log('Senha correta');
-        req.session.login = results[0].email;
-        res.redirect('/funcionarios');
-      } else {
-        res.render('login', { error: 'Senha incorreta' });
-      }
-    });
-  });
+exports.login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await Login.getByEmail(email);
+
+    if (!user) {
+      return res.status(401).render('login', { error: 'E-mail ou senha inválidos' });
+    }
+
+    const senhaValida = await bcrypt.compare(password, user.senha);
+    if (!senhaValida) {
+      return res.status(401).render('login', { error: 'E-mail ou senha inválidos' });
+    }
+
+    req.session.login = user.email;
+    res.redirect('/funcionarios');
+  } catch (err) {
+    console.error(err);
+    res.status(500).render('login', { error: 'Erro ao processar autenticação' });
+  }
 };
 
 exports.logout = (req, res) => {
-  req.session.destroy();
-  res.redirect('/login');
+  req.session.destroy(() => {
+    res.redirect('/login');
+  });
 };
