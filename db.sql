@@ -13,3 +13,6 @@ CREATE TABLE IF NOT EXISTS logins (
     senha VARCHAR(2000),
     PRIMARY KEY (email)
 );
+
+Insert into logins (email, senha) 
+values ('teste@teste.com', '$2b$10$dT4YwdZeabGemhqv5ESUI.9Fr.16nCPg3f3jJ551fIN6BzmbYQfKq');
